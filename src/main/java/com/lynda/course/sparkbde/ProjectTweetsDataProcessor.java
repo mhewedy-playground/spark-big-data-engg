@@ -21,7 +21,6 @@ import java.util.*;
 
 import static com.lynda.course.sparkbde.Util.*;
 
-//
 public class ProjectTweetsDataProcessor {
     public static void main(String[] args) throws Exception {
 

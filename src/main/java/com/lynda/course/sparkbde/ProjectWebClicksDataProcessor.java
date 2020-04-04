@@ -20,7 +20,6 @@ import java.util.*;
 
 import static com.lynda.course.sparkbde.Util.*;
 
-//
 public class ProjectWebClicksDataProcessor {
     public static void main(String[] args) throws Exception {
 
