@@ -2,29 +2,27 @@
 package com.lynda.course.sparkbde;
 
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.spark.util.AccumulatorV2;
 
-public class CustomAccuMap
-	extends AccumulatorV2<Map<String,Double>, Map<String,Double>> {
+import java.util.HashMap;
+import java.util.Map;
 
-    private Map<String,Double> myMap =
-    					new HashMap<String,Double>();
+public class CustomAccuMap
+        extends AccumulatorV2<Map<String, Double>, Map<String, Double>> {
+
+    private Map<String, Double> myMap = new HashMap<>();
 
     public CustomAccuMap() {
-        this(new HashMap<String,Double>());
+        this(new HashMap<>());
     }
 
-    public CustomAccuMap(Map<String,Double> initialValue) {
+    public CustomAccuMap(Map<String, Double> initialValue) {
         if (initialValue != null) {
-        	myMap = initialValue ;
+            myMap = initialValue;
         }
     }
 
-    public void add(Map<String,Double> newMap) {
+    public void add(Map<String, Double> newMap) {
 
         for (String key : newMap.keySet()) {
             if (myMap.containsKey(key)) {
@@ -44,8 +42,8 @@ public class CustomAccuMap
         return (myMap.size() == 0);
     }
 
-    public void merge(AccumulatorV2<Map<String,Double>,
-    			Map<String,Double>> other) {
+    public void merge(AccumulatorV2<Map<String, Double>,
+            Map<String, Double>> other) {
         add(other.value());
     }
 
@@ -53,9 +51,8 @@ public class CustomAccuMap
         myMap.clear();
     }
 
-    public Map<String,Double> value() {
+    public Map<String, Double> value() {
         return myMap;
     }
-
 
 }
