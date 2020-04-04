@@ -78,6 +78,8 @@ public class ProjectWebClicksDataProcessor {
             System.out.println("Mapped values " + clicksMap.value());
 
             for (String salesDate : clicksMap.value().keySet()) {
+                createRowIfNotExists(mysqlConn, salesDate);
+
                 String updateSql = "UPDATE exec_summary SET WEB_HITS = WEB_HITS + " + clicksMap.value().get(salesDate)
                         + " WHERE REPORT_DATE = '" + salesDate + "'";
                 System.out.println(updateSql);

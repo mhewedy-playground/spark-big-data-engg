@@ -76,6 +76,8 @@ public class ProjectUSSalesDataProcessor {
             System.out.println("Mapped values " + salesMap.value());
 
             for (String salesDate : salesMap.value().keySet()) {
+                createRowIfNotExists(mysqlConn, salesDate);
+
                 String updateSql = "UPDATE exec_summary SET SALES = SALES + "
                         + salesMap.value().get(salesDate)
                         + " WHERE REPORT_DATE = '" + salesDate + "'";
@@ -98,4 +100,6 @@ public class ProjectUSSalesDataProcessor {
         // ssc.close();
         sleep();
     }
+
+
 }

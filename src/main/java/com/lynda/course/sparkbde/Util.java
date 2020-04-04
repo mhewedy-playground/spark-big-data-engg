@@ -12,6 +12,7 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public class Util {
     public static JavaStreamingContext getStreamingContext() {
         // Start a spark instance and get a context
         SparkConf conf = new SparkConf()
-                .setMaster("spark://localhost:7077")
+                .setMaster("local[2]")
                 .setAppName("Study Spark");
         // Setup a streaming context.
         return new JavaStreamingContext(conf, Durations.seconds(3));
@@ -70,6 +71,19 @@ public class Util {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void createRowIfNotExists(Connection mysqlConn, String salesDate) throws SQLException {
+        boolean notExists = mysqlConn.createStatement()
+                .executeQuery("select count(*) from exec_summary where report_date ='" + salesDate + "'")
+                .getInt(1) == 0;
+
+        if (notExists) {
+            mysqlConn
+                    .createStatement()
+                    .executeUpdate("insert into exec_summary (report_date, sales, web_hits, tweets, tweets_positive)" +
+                            " values ('" + salesDate + "', 0, 0, 0, 0)");
         }
     }
 }

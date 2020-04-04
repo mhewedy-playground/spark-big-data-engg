@@ -86,6 +86,8 @@ public class ProjectTweetsDataProcessor {
             System.out.println("Mapped values " + totalTweetsMap.value());
 
             for (String salesDate : totalTweetsMap.value().keySet()) {
+                createRowIfNotExists(mysqlConn, salesDate);
+
                 String updateSql = "UPDATE exec_summary SET TWEETS = TWEETS + " + totalTweetsMap.value().get(salesDate)
                         + " WHERE REPORT_DATE = '" + salesDate + "'";
                 System.out.println(updateSql);
@@ -95,6 +97,8 @@ public class ProjectTweetsDataProcessor {
             totalTweetsMap.reset();
 
             for (String salesDate : positiveTweetsMap.value().keySet()) {
+                createRowIfNotExists(mysqlConn, salesDate);
+
                 String updateSql = "UPDATE exec_summary SET TWEETS_POSITIVE = TWEETS_POSITIVE + " + positiveTweetsMap.value().get(salesDate)
                         + " WHERE REPORT_DATE = '" + salesDate + "'";
                 System.out.println(updateSql);
