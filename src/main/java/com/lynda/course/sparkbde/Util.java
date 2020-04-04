@@ -61,4 +61,15 @@ public class Util {
         kafkaParams.put("enable.auto.commit", false);
         return kafkaParams;
     }
+
+    public static void sleep() {
+        // Keep the program alive.
+        while (true) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
