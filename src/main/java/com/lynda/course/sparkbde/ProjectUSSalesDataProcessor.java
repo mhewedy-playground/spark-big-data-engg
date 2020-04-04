@@ -62,7 +62,7 @@ public class ProjectUSSalesDataProcessor {
                         + orderDateStr + "  " + orderValue);
 
                 //Add the data extracted to a map
-                Map<String, Double> dataMap = new HashMap<String, Double>();
+                Map<String, Double> dataMap = new HashMap<>();
                 dataMap.put(orderDateStr, orderValue);
                 //Add the map to the accumulator
                 salesMap.add(dataMap);
@@ -76,9 +76,7 @@ public class ProjectUSSalesDataProcessor {
             System.out.println("executing foreachRDD");
             System.out.println("Mapped values " + salesMap.value());
 
-            Iterator dIterator = salesMap.value().keySet().iterator();
-            while (dIterator.hasNext()) {
-                String salesDate = (String) dIterator.next();
+            for (String salesDate : salesMap.value().keySet()) {
                 String updateSql = "UPDATE exec_summary SET SALES = SALES + "
                         + salesMap.value().get(salesDate)
                         + " WHERE REPORT_DATE = '" + salesDate + "'";

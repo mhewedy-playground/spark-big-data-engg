@@ -16,7 +16,6 @@ import org.apache.spark.streaming.kafka010.ConsumerStrategies;
 import org.apache.spark.streaming.kafka010.KafkaUtils;
 import org.apache.spark.streaming.kafka010.LocationStrategies;
 
-import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -78,13 +77,11 @@ public class ProjectEUSalesDataProcessor {
             System.out.println("Mapped values " + salesMap.value());
 
             for (String salesDate : salesMap.value().keySet()) {
-                String updateSql = "UPDATE exec_summary SET SALES = SALES + ? WHERE REPORT_DATE = ?";
-                System.out.println(updateSql + ", " + salesMap.value().get(salesDate) + "," + salesDate);
+                String updateSql = "UPDATE exec_summary SET SALES = SALES + "
+                        + salesMap.value().get(salesDate)
+                        + " WHERE REPORT_DATE = '" + salesDate + "'";
+                System.out.println(updateSql);
                 mysqlConn.createStatement().executeUpdate(updateSql);
-                PreparedStatement stmt = mysqlConn.prepareStatement(updateSql);
-                stmt.setDouble(1, salesMap.value().get(salesDate));
-                stmt.setString(2, salesDate);
-                stmt.executeUpdate();
             }
             salesMap.reset();
         });
@@ -97,9 +94,7 @@ public class ProjectEUSalesDataProcessor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         // ssc.close();
-
         sleep();
     }
 }
